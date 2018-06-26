@@ -7,4 +7,3 @@ Download [create-react-native-app](https://github.com/react-community/create-rea
 If you choose to `npm run eject`, you need Xcode. If you don't `npm run eject`, you need to download Expo on your device.
 
 Alternatively, `npm run ios` `npm run andriod` allows you to run the app on a simulator if one is installed
-
