@@ -7,7 +7,7 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      images : ["./../images/1.jpg", "./../images/2.jpeg", "./../images/3.jpeg", "./../images/4.jpeg"]
+      images : []
     }
   }
 
@@ -16,7 +16,7 @@ export default class App extends React.Component {
   //  tutorial
   componentDidMount = () => {
     this.setState({
-      images: ["./../images/1.jpg", "./../images/2.jpeg", "./../images/3.jpeg", "./../images/4.jpeg"]
+      images: ["http://www.gstatic.com/webp/gallery/1.jpg", "http://www.gstatic.com/webp/gallery/2.jpg", "http://www.gstatic.com/webp/gallery/3.jpg", "http://www.gstatic.com/webp/gallery/4.jpg"]
     })
   }
 
