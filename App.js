@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Carousel from './components/Carousel'
 
 export default class App extends React.Component {
   // saving image paths in state
   constructor() {
     super();
     this.state = {
-      images : []
+      images : ["./../images/1.jpg", "./../images/2.jpeg", "./../images/3.jpeg", "./../images/4.jpeg"]
     }
   }
 
@@ -15,7 +16,7 @@ export default class App extends React.Component {
   //  tutorial
   componentDidMount = () => {
     this.setState({
-      images: ["./images/1.jpg", "./images/2.jpeg", "./images/3.jpeg", "./images/4.jpeg"]
+      images: ["./../images/1.jpg", "./../images/2.jpeg", "./../images/3.jpeg", "./../images/4.jpeg"]
     })
   }
 
@@ -24,8 +25,10 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <Text>React Native Carousel</Text>
-        
+        <Carousel 
+        images={this.state.images}/>
       </View>
+      
     );
   }
 }
@@ -35,6 +38,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingTop: 50
   },
 });
