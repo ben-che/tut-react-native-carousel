@@ -13,13 +13,13 @@ export default class Carousel extends React.Component {
         // we declare some constants here for calcuations later on:
         // allows us to get the width of the window
         const deviceWidth = Dimensions.get('window').width
-        const FIXED_CIRC_WIDTH = 20
-        const CIRC_PADDING = 10
+        const FIXED_CIRC_WIDTH = 200
+        const CIRC_MARGIN = 10
 
         // calculations are done here:
         let animVal = new Animated.Value(0)
         let numItems = this.props.images.length
-        let itemWidth = (FIXED_CIRC_WIDTH / numItems) - ((numItems - 1) * CIRC_PADDING) // allows us to add spacing between circles evenly
+        let itemWidth = (FIXED_CIRC_WIDTH / numItems) - ((numItems - 1) * CIRC_MARGIN) // allows us to add spacing between circles evenly
 
         // declare an array for images and for circles
         let imageArray = []
@@ -37,16 +37,70 @@ export default class Carousel extends React.Component {
               )
               // adding images to array for render
               imageArray.push(imageElem)
+
+              // interpolation maps input ranges to output ranges, smooth animation
+              const circVal = animVal.interpolate({
+                inputRange: [deviceWidth * (i - 1), deviceWidth * (i + 1)],
+                outputRange: [-itemWidth, itemWidth],
+                extrapolate: 'clamp',
+              })
+
+              // creating circles to display on the images
+              const oneCirc = (
+                <View
+                  key={`circ${i}`}
+                  style={[
+                    styles.track,
+                    {
+                      width: this.itemWidth,
+                      marginLeft: i === 0 ? 0 : CIRC_MARGIN,
+                    },
+                  ]}
+                >
+                  <Animated.View
+        
+                    style={[
+                      styles.circ,
+                      {
+                        width: itemWidth,
+                        transform: [
+                          { translateX: circVal },
+                        ],
+                      },
+                    ]}
+                  />
+                </View>
+              )
+              circArray.push(oneCirc)
         })
 
         return (
-            <View style={styles.caroContainer}>
-                <ScrollView
-                    horizontal //scrolling left to right instead of top to bottom
-                    showsHorizontalScrollIndicator={false} //hides native scrollbar
-                    scrollEventThrottle={10} //how often we update the position of the indicator bar
-                    pagingEnabled //scrolls from one image to the next, instead of allowing any value inbetween
-                />
+            <View>
+                <View
+                    style={styles.caroContainer}
+                    flex={1}
+                >
+                    <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    scrollEventThrottle={10}
+                    pagingEnabled
+                    onScroll={
+                        Animated.event(
+                        [{ nativeEvent: { contentOffset: { x: this.animVal } } }]
+                        )
+                    }
+                    >
+
+                    {imageArray}
+
+                    </ScrollView>
+                    <View
+                    style={styles.circContainer}
+                    >
+                    {circArray}
+                    </View>
+                </View>
             </View>
         );
     }
@@ -59,5 +113,24 @@ export default class Carousel extends React.Component {
       alignItems: 'center',
       marginTop: 40
     },
+    circContainer: {
+        position: 'absolute',
+        zIndex: 2,
+        top: 40,
+        flexDirection: 'row',
+        backgroundColor: '#ccc',
+      },
+      track: {
+        backgroundColor: '#ccc',
+        overflow: 'hidden',
+        height: 2,
+      },
+      circ: {
+        backgroundColor: '#5294d6',
+        height: 200,
+        position: 'absolute',
+        left: 0,
+        top: 0,
+      },
   });
   
